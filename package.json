@@ -7,6 +7,9 @@
     "build": "builder build plugin",
     "dev": "yarn build && yarn checkdeps"
   },
+  "workspaces": [
+    "apps/**"
+  ],
   "dependencies": {
     "@yarnpkg/builder": "^3.1.0",
     "@yarnpkg/cli": "^3.1.0",
@@ -14,8 +17,10 @@
     "@yarnpkg/fslib": "*",
     "@yarnpkg/plugin-essentials": "*",
     "clipanion": "^3.0.1",
+    "comment-json": "^4.1.1",
     "ignore-walk": "^4.0.1",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.2",
+    "workspace1": "workspace:*"
   },
   "author": "Ali Zeaiter",
   "license": "ISC",

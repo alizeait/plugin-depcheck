@@ -16,6 +16,7 @@ import { Filename, PortablePath, ppath, npath, xfs } from "@yarnpkg/fslib";
 import { BaseCommand, WorkspaceRequiredError } from "@yarnpkg/cli";
 import { Option } from "clipanion";
 import { suggestUtils } from "@yarnpkg/plugin-essentials";
+import { parse } from "comment-json";
 
 class CheckDepsCommand extends BaseCommand {
   static paths = [["checkdeps"]];
@@ -102,9 +103,9 @@ class CheckDepsCommand extends BaseCommand {
     //@ts-ignore
     const depcheck = globalRequire("depcheck");
 
-    const tsConfig = getTsConfig(this.context.cwd);
+    const tsConfig = getTsConfig(workspace.cwd);
 
-    const rootDirs = getRootDirs(this.context.cwd, tsConfig);
+    const rootDirs = getRootDirs(workspace.cwd, tsConfig);
     const paths = getTsConfigPaths(tsConfig);
     await StreamReport.start(
       {
@@ -117,7 +118,7 @@ class CheckDepsCommand extends BaseCommand {
           ignoreFiles: [".gitignore"],
           path: npath.fromPortablePath(rootWorkspace.cwd),
         });
-        const check = await depcheck(npath.fromPortablePath(this.context.cwd), {
+        const check = await depcheck(npath.fromPortablePath(workspace.cwd), {
           ignoreBinPackage: true,
           ignorePatterns: [...gitIgnoreFiles, ...this.ignorePatterns],
           ignoreMatches: [...rootDirs, ...paths],
@@ -136,7 +137,9 @@ class CheckDepsCommand extends BaseCommand {
             FormatType.CODE
           )
         );
-        Object.keys(check?.missing || {}).forEach((packageName) => {
+        const isRootWorkspace = workspace.cwd === rootWorkspace.cwd;
+        const missingDeps = Object.keys(check?.missing || {});
+        missingDeps.forEach((packageName) => {
           const isWorkspace = workspacesByName.has(packageName);
 
           const ident = structUtils.parseIdent(packageName);
@@ -144,22 +147,17 @@ class CheckDepsCommand extends BaseCommand {
             structUtils.makeIdent(ident.scope, ident.name),
             isWorkspace ? "workspace:*" : "*"
           );
-          workspace.manifest[suggestUtils.Target.REGULAR].set(
-            descriptor.identHash,
-            descriptor
-          );
+          (isRootWorkspace ? rootWorkspace : workspace).manifest[
+            suggestUtils.Target.REGULAR
+          ].set(descriptor.identHash, descriptor);
         });
 
-        await StreamReport.start(
-          {
-            configuration,
-            json: false,
-            stdout: this.context.stdout,
-          },
-          async (report) => {
-            await project.install({ cache, report });
-          }
-        );
+        if (missingDeps.length) {
+          await (isRootWorkspace ? rootProject : project).install({
+            cache,
+            report,
+          });
+        }
         report.exitCode();
       }
     );
@@ -174,8 +172,14 @@ export default plugin;
 
 const getTsConfig = (cwd: PortablePath): Record<string, any> | undefined => {
   try {
-    return xfs.readJsonSync(ppath.resolve(cwd, "tsconfig.json" as Filename));
-  } catch (error) {}
+    const filePath = ppath.resolve(cwd, "tsconfig.json" as Filename);
+    const content = xfs.existsSync(filePath)
+      ? xfs.readFileSync(filePath, `utf8`)
+      : `{}`;
+    return parse(content);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getRootDirs = (
@@ -200,5 +204,5 @@ const getRootDirs = (
 const getTsConfigPaths = (tsConfig: Record<string, any>) => {
   const paths = tsConfig?.compilerOptions?.paths;
   if (!paths) return [];
-  return Object.keys(paths).map((path) => path.replace("/", ""));
+  return Object.keys(paths);
 };
