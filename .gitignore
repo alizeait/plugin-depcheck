@@ -1,0 +1,14 @@
+node_modules
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.next
+apps/**
+ali.ts
+Component.ts
+**/src/utils**
+tsconfig3.json
