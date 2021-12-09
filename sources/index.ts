@@ -21,7 +21,10 @@ import { parse } from "comment-json";
 class CheckDepsCommand extends BaseCommand {
   static paths = [["checkdeps"]];
   ignorePatterns = Option.Array(`--ignore-patterns`, [], {
-    description: `An array of glob patterns of files to ignore`,
+    description: `Comma separated patterns describing files to ignore. Patterns must match the .gitignore spec.`,
+  });
+  ignorePackages = Option.Array(`--ignore-packages`, [], {
+    description: `A comma separated array containing package names to ignore. It can be glob expressions"`,
   });
   write = Option.Boolean(`--write`, false, {
     description: `Write missing dependencies into packageJson.dependencies, workspaces will have the range "workspace:*" while regular
@@ -126,7 +129,7 @@ class CheckDepsCommand extends BaseCommand {
           ignoreBinPackage: true,
           specials: [],
           ignorePatterns: [...gitIgnoreFiles, ...this.ignorePatterns],
-          ignoreMatches: [...rootDirs, ...paths],
+          ignoreMatches: [...rootDirs, ...paths, ...this.ignorePackages],
         });
         const Mark = formatUtils.mark(configuration);
         const missingDeps = Object.keys(check?.missing || {});

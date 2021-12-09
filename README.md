@@ -16,14 +16,18 @@ USAGE
 $ yarn checkdeps
 
 OPTIONS
-   --ignore-patterns      An array of glob patterns of files to ignore
 
    --write                Write missing dependencies into dependencies package.json, workspaces will have the range "workspace:*" while regular dependencies will prefer any range available from other workspaces, otherwise "*"
+
+   --ignore-patterns      Comma separated patterns describing files to ignore. Patterns must match the .gitignore spec.
+
+   --ignore-packages      A comma separated array containing package names to ignore. It can be glob expressions"
 
 EXAMPLES
   $ yarn checkdeps
   $ yarn checkdeps --write
-  $ yarn checkdeps --write --ignore-patterns={*.scss,*.css}
+  $ yarn checkdeps --write --ignore-patterns={dist,coverage,*.log}
+  $ yarn checkdeps --write --ignore-packages={eslint,babel-*}
 ```
 
 ## Features
