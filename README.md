@@ -12,7 +12,7 @@ $ yarn checkdeps
 OPTIONS
    --ignore-patterns      An array of glob patterns of files to ignore
 
-   --write                Write missing dependencies into dependencies package.json, workspaces will have the range "workspace:\*" while regular dependencies will prefer any range available from other workspaces, otherwise "\*"
+   --write                Write missing dependencies into dependencies package.json, workspaces will have the range "workspace:*" while regular dependencies will prefer any range available from other workspaces, otherwise "*"
 
 EXAMPLES
   $ yarn checkdeps
