@@ -5,7 +5,7 @@
 ## Install
 
 ```bash
-yarn plugin import https://raw.githubusercontent.com/alizeait/plugin-depcheck/init/bundles/@yarnpkg/plugin-depcheck.js
+yarn plugin import https://raw.githubusercontent.com/alizeait/plugin-depcheck/master/bundles/@yarnpkg/plugin-depcheck.js
 
 ```
 
