@@ -1,5 +1,5 @@
 {
-  "name": "@yarnpkg/plugin-depcheck",
+  "name": "@alizeait/yarn-plugin-depcheck",
   "version": "0.0.1",
   "description": "Check and add workspace dependencies",
   "main": "./sources/index.ts",

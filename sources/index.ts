@@ -240,9 +240,7 @@ const getRootDirs = (
     // file and directories
     const dirs = xfs.readdirSync(resolvedRoot);
     // files without extensions
-    const dirNames = xfs
-      .readdirSync(resolvedRoot)
-      ?.map((path) => ppath.parse(path).name);
+    const dirNames = dirs?.map((path) => ppath.parse(path).name);
     return [...new Set([...dirs, ...dirNames])];
   } catch (error) {
     return [];

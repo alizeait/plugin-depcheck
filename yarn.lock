@@ -5,6 +5,23 @@ __metadata:
   version: 5
   cacheKey: 8
 
+"@alizeait/yarn-plugin-depcheck@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@alizeait/yarn-plugin-depcheck@workspace:."
+  dependencies:
+    "@yarnpkg/builder": ^3.1.0
+    "@yarnpkg/cli": ^3.1.0
+    "@yarnpkg/core": ^3.1.0
+    "@yarnpkg/fslib": "*"
+    "@yarnpkg/plugin-essentials": "*"
+    clipanion: ^3.0.1
+    comment-json: ^4.1.1
+    depcheck: ^1.4.2
+    ignore-walk: ^4.0.1
+    typescript: ^4.4.2
+  languageName: unknown
+  linkType: soft
+
 "@arcanis/slice-ansi@npm:^1.0.2":
   version: 1.0.2
   resolution: "@arcanis/slice-ansi@npm:1.0.2"
@@ -765,9 +782,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/builder@patch:@yarnpkg/builder@npm:3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf::locator=%40yarnpkg%2Fplugin-depcheck%40workspace%3A.":
+"@yarnpkg/builder@patch:@yarnpkg/builder@npm:3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf::locator=%40alizeait%2Fyarn-plugin-depcheck%40workspace%3A.":
   version: 3.1.0
-  resolution: "@yarnpkg/builder@patch:@yarnpkg/builder@npm%3A3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf::version=3.1.0&hash=248e25&locator=%40yarnpkg%2Fplugin-depcheck%40workspace%3A."
+  resolution: "@yarnpkg/builder@patch:@yarnpkg/builder@npm%3A3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf::version=3.1.0&hash=248e25&locator=%40alizeait%2Fyarn-plugin-depcheck%40workspace%3A."
   dependencies:
     "@babel/core": ^7.10.2
     "@yarnpkg/cli": ^3.1.0
@@ -945,23 +962,6 @@ __metadata:
   checksum: 698d58ff96c8ceb870afa897158e542d340404f9f2b87d129f1467f8e2ae33ddae16824dafb61b49290c21ade8b7f94dbc634907b365e65f4c35f939eabd631c
   languageName: node
   linkType: hard
-
-"@yarnpkg/plugin-depcheck@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@yarnpkg/plugin-depcheck@workspace:."
-  dependencies:
-    "@yarnpkg/builder": ^3.1.0
-    "@yarnpkg/cli": ^3.1.0
-    "@yarnpkg/core": ^3.1.0
-    "@yarnpkg/fslib": "*"
-    "@yarnpkg/plugin-essentials": "*"
-    clipanion: ^3.0.1
-    comment-json: ^4.1.1
-    depcheck: ^1.4.2
-    ignore-walk: ^4.0.1
-    typescript: ^4.4.2
-  languageName: unknown
-  linkType: soft
 
 "@yarnpkg/plugin-dlx@npm:^3.1.0":
   version: 3.1.1
