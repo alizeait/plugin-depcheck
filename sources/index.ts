@@ -20,14 +20,14 @@ import { parse } from "comment-json";
 
 class CheckDepsCommand extends BaseCommand {
   static paths = [["checkdeps"]];
-  ignorePatterns = Option.Array(`--ignore-patterns`, [], {
-    description: `Comma separated patterns describing files to ignore. Patterns must match the .gitignore spec.`,
+  ignoreFiles = Option.Array(`--ignore-files`, [], {
+    description: `Comma separated patterns describing files to ignore. Patterns must match the .gitignore spec`,
   });
   ignorePackages = Option.Array(`--ignore-packages`, [], {
     description: `A comma separated array containing package names to ignore. It can be glob expressions"`,
   });
   write = Option.Boolean(`--write`, false, {
-    description: `Write missing dependencies into packageJson.dependencies, workspaces will have the range "workspace:*" while regular
+    description: `Write missing dependencies package.json. Workspaces will have the range "workspace:*" while regular
     dependencies will prefer any range available from other workspaces, otherwise "*"`,
   });
   async execute() {
@@ -135,7 +135,7 @@ class CheckDepsCommand extends BaseCommand {
         const check = await depcheck(npath.fromPortablePath(workspace.cwd), {
           ignoreBinPackage: true,
           specials: [],
-          ignorePatterns: [...gitIgnoreFiles, ...this.ignorePatterns],
+          ignorePatterns: [...gitIgnoreFiles, ...this.ignoreFiles],
           ignoreMatches: [
             ...currentWorkSpaceIgnores,
             ...rootDirs,
