@@ -19,7 +19,7 @@ OPTIONS
 
    --write                Write missing dependencies into package.json, workspaces will have the range "workspace:*" while regular dependencies will prefer any range available from other workspaces, otherwise "*"
 
-   --ignore-files      Comma separated patterns describing files to ignore. Patterns must match the .gitignore spec.
+   --ignore-files         Comma separated patterns describing files to ignore. Patterns must match the .gitignore spec.
 
    --ignore-packages      A comma separated array containing package names to ignore. It can be glob expressions"
 
