@@ -1,6 +1,6 @@
 /* eslint-disable */
 //prettier-ignore 
- var globalRequire = require;
+ var globalRequire = typeof require !== 'undefined' ? require : function(){};
 
 module.exports = {
 name: "@yarnpkg/plugin-depcheck",
