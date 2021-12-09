@@ -2,10 +2,16 @@
 
 - Check and add workspace dependencies
 
-## Usage
+## Install
+
+```bash
+yarn plugin import https://raw.githubusercontent.com/alizeait/plugin-depcheck/init/bundles/@yarnpkg/plugin-depcheck.js
 
 ```
 
+## Usage
+
+```
 USAGE
 $ yarn checkdeps
 
