@@ -946,7 +946,6 @@ __metadata:
     depcheck: ^1.4.2
     ignore-walk: ^4.0.1
     typescript: ^4.4.2
-    workspace1: "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -4743,7 +4742,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "workspace2@workspace:apps/workspace2"
   dependencies:
-    workspace1: "workspace:*"
     workspace3: "workspace:*"
   languageName: unknown
   linkType: soft

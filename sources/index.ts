@@ -23,6 +23,10 @@ class CheckDepsCommand extends BaseCommand {
   ignorePatterns = Option.Array(`--ignore-patterns`, [], {
     description: `An array of glob patterns of files to ignore`,
   });
+  write = Option.Boolean(`--write`, false, {
+    description: `Write missing dependencies into packageJson.dependencies, workspaces will have the range "workspace:*" while regular
+    dependencies will prefer any range available from other workspaces, otherwise "*"`,
+  });
   async execute() {
     const configuration = await Configuration.find(
       this.context.cwd,
@@ -120,43 +124,71 @@ class CheckDepsCommand extends BaseCommand {
         });
         const check = await depcheck(npath.fromPortablePath(workspace.cwd), {
           ignoreBinPackage: true,
+          specials: [],
           ignorePatterns: [...gitIgnoreFiles, ...this.ignorePatterns],
           ignoreMatches: [...rootDirs, ...paths],
         });
-        report.reportInfo(
-          null,
-          formatUtils.pretty(
-            configuration,
-            JSON.stringify(
-              {
-                missing: check?.missing,
-              },
-              null,
-              2
-            ),
-            FormatType.CODE
-          )
-        );
-        const isRootWorkspace = workspace.cwd === rootWorkspace.cwd;
+        const Mark = formatUtils.mark(configuration);
         const missingDeps = Object.keys(check?.missing || {});
-        missingDeps.forEach((packageName) => {
-          const isWorkspace = workspacesByName.has(packageName);
-
-          const ident = structUtils.parseIdent(packageName);
-          const descriptor = structUtils.makeDescriptor(
-            structUtils.makeIdent(ident.scope, ident.name),
-            isWorkspace ? "workspace:*" : "*"
-          );
-          (isRootWorkspace ? rootWorkspace : workspace).manifest[
-            suggestUtils.Target.REGULAR
-          ].set(descriptor.identHash, descriptor);
-        });
-
         if (missingDeps.length) {
-          await (isRootWorkspace ? rootProject : project).install({
-            cache,
-            report,
-          });
+          report.reportWarning(
+            null,
+            formatUtils.pretty(
+              configuration,
+              "Missing dependencies:",
+              FormatType.CODE
+            )
+          );
+          report.reportWarning(
+            null,
+            formatUtils.pretty(
+              configuration,
+              JSON.stringify(missingDeps),
+              FormatType.CODE
+            )
+          );
+          if (this.write) {
+            const isRootWorkspace = workspace.cwd === rootWorkspace.cwd;
+            missingDeps.forEach((packageName) => {
+              const isWorkspace = workspacesByName.has(packageName);
+
+              const ident = structUtils.parseIdent(packageName);
+
+              const allWorkspacesDeps = allWorkspaces.reduce(
+                (acc, workspace) => {
+                  const deps = [
+                    ...workspace.manifest.dependencies,
+                    ...workspace.manifest.devDependencies,
+                  ].map((dep) => {
+                    return [dep[1].name, dep[1].range] as const;
+                  });
+                  return new Map([...acc, ...deps]);
+                },
+                new Map()
+              );
+
+              const descriptor = structUtils.makeDescriptor(
+                structUtils.makeIdent(ident.scope, ident.name),
+                isWorkspace
+                  ? "workspace:*"
+                  : allWorkspacesDeps.get(packageName) || "*"
+              );
+              (isRootWorkspace ? rootWorkspace : workspace).manifest[
+                suggestUtils.Target.REGULAR
+              ].set(descriptor.identHash, descriptor);
+            });
+
+            (isRootWorkspace ? rootProject : project).persist();
+          }
+        } else {
+          report.reportInfo(
+            null,
+            formatUtils.pretty(
+              configuration,
+              `${Mark.Check} No missing dependencies found!`,
+              FormatType.CODE
+            )
+          );
         }
         report.exitCode();
       }
@@ -204,5 +236,8 @@ const getRootDirs = (
 const getTsConfigPaths = (tsConfig: Record<string, any>) => {
   const paths = tsConfig?.compilerOptions?.paths;
   if (!paths) return [];
-  return Object.keys(paths);
+  return [
+    ...Object.keys(paths),
+    ...Object.keys(paths).map((path) => path.replace(/(.+?)[\/\*]+$/, "$1*")),
+  ];
 };
