@@ -767,7 +767,7 @@ __metadata:
 
 "@yarnpkg/builder@patch:@yarnpkg/builder@npm:3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf::locator=%40yarnpkg%2Fplugin-depcheck%40workspace%3A.":
   version: 3.1.0
-  resolution: "@yarnpkg/builder@patch:@yarnpkg/builder@npm%3A3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf::version=3.1.0&hash=93faa1&locator=%40yarnpkg%2Fplugin-depcheck%40workspace%3A."
+  resolution: "@yarnpkg/builder@patch:@yarnpkg/builder@npm%3A3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf::version=3.1.0&hash=248e25&locator=%40yarnpkg%2Fplugin-depcheck%40workspace%3A."
   dependencies:
     "@babel/core": ^7.10.2
     "@yarnpkg/cli": ^3.1.0
@@ -792,7 +792,7 @@ __metadata:
     typescript: "*"
   bin:
     builder: ./lib/cli.js
-  checksum: d78c98f118fbe6a2f39dc2f54b7d74fc44367d087e88df54f32c1ec937fc40ad2a7aa8efd76bb74c4e5e25e0c0fa60be3d65df7896192a2bbeb99c94c960a93e
+  checksum: dda58bfbc4d7ec00878f4f323b9e57eb35fa7f4aab0f74dd4bd3d404b9610a971a2d433f442b1940d9a6660e5d7526ee1f0c2ef1ddc5f343c28bc28765dd432f
   languageName: node
   linkType: hard
 

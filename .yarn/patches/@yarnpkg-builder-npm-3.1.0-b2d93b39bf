@@ -7,7 +7,7 @@ index 3b4fd06aa167df7533f9ef577242a18207fab223..6ed66189807ed7db13df8e4ad3122a63
                          js: [
                              `/* eslint-disable */`,
 -                            `//prettier-ignore`,
-+                            `//prettier-ignore \n var globalRequire = require;\n`,
++                            `//prettier-ignore \n var globalRequire = typeof require !== 'undefined' ? require : function(){};\n`,
                              `module.exports = {`,
                              `name: ${JSON.stringify(name)},`,
                              `factory: function (require) {`,
