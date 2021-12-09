@@ -125,11 +125,23 @@ class CheckDepsCommand extends BaseCommand {
           ignoreFiles: [".gitignore"],
           path: npath.fromPortablePath(rootWorkspace.cwd),
         });
+        const currentWorkspaceName = structUtils.stringifyIdent(
+          workspace.manifest.name
+        );
+        const currentWorkSpaceIgnores = [
+          currentWorkspaceName,
+          `${currentWorkspaceName}/*`,
+        ];
         const check = await depcheck(npath.fromPortablePath(workspace.cwd), {
           ignoreBinPackage: true,
           specials: [],
           ignorePatterns: [...gitIgnoreFiles, ...this.ignorePatterns],
-          ignoreMatches: [...rootDirs, ...paths, ...this.ignorePackages],
+          ignoreMatches: [
+            ...currentWorkSpaceIgnores,
+            ...rootDirs,
+            ...paths,
+            ...this.ignorePackages,
+          ],
         });
         const Mark = formatUtils.mark(configuration);
         const missingDeps = Object.keys(check?.missing || {});
