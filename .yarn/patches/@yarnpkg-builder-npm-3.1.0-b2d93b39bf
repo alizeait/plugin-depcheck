@@ -1,0 +1,13 @@
+diff --git a/lib/commands/build/plugin.js b/lib/commands/build/plugin.js
+index 3b4fd06aa167df7533f9ef577242a18207fab223..6ed66189807ed7db13df8e4ad3122a63aecdf110 100644
+--- a/lib/commands/build/plugin.js
++++ b/lib/commands/build/plugin.js
+@@ -69,7 +69,7 @@ class BuildPluginCommand extends clipanion_1.Command {
+                     banner: {
+                         js: [
+                             `/* eslint-disable */`,
+-                            `//prettier-ignore`,
++                            `//prettier-ignore \n var globalRequire = require;\n`,
+                             `module.exports = {`,
+                             `name: ${JSON.stringify(name)},`,
+                             `factory: function (require) {`,

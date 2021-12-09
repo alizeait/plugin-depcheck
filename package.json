@@ -1,7 +1,7 @@
 {
   "name": "@yarnpkg/plugin-depcheck",
   "version": "0.0.1",
-  "description": "Check workspace dependencies",
+  "description": "Check and add workspace dependencies",
   "main": "./sources/index.ts",
   "scripts": {
     "build": "builder build plugin",
@@ -25,5 +25,8 @@
   "license": "ISC",
   "devDependencies": {
     "depcheck": "^1.4.2"
+  },
+  "resolutions": {
+    "@yarnpkg/builder": "patch:@yarnpkg/builder@npm:3.1.0#.yarn/patches/@yarnpkg-builder-npm-3.1.0-b2d93b39bf"
   }
 }
